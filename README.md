@@ -39,6 +39,37 @@ Inside `psql`: `\dt` lists tables, `\d user_account` describes one, `\q` quits.
 
 Stop the database with `docker compose down`. Wipe all local data with `docker compose down -v`.
 
+## API
+
+Base path: `/api/v1/auth`. Protected endpoints need the header `Authorization: Bearer <accessToken>`.
+
+| Method | Path | Auth | Success | Purpose |
+|---|---|---|---|---|
+| POST | `/register` | – | 201 + user | Create a customer account `{email, password}` |
+| POST | `/login` | – | 200 + token | Log in `{email, password}` |
+| POST | `/logout` | ✓ | 204 | End this session |
+| GET | `/me` | ✓ | 200 + user | Who is logged in |
+| PUT | `/password` | ✓ | 204 | Change password `{currentPassword, newPassword}` and log out other devices |
+
+Every error has the same JSON shape: `{code, message, fieldErrors, timestamp}`.
+
+| HTTP | `code` | When |
+|---|---|---|
+| 400 | `VALIDATION_FAILED` | Bad input (see `fieldErrors`) |
+| 400 | `MALFORMED_REQUEST` | Body isn't valid JSON |
+| 400 | `INCORRECT_CURRENT_PASSWORD` | Wrong current password on change |
+| 401 | `INVALID_CREDENTIALS` | Wrong email or password |
+| 401 | `INVALID_SESSION` | Missing, invalid, expired or logged-out token |
+| 403 | `ACCOUNT_DISABLED` | Account disabled by an admin |
+| 409 | `EMAIL_ALREADY_REGISTERED` | Email taken |
+| 423 | `ACCOUNT_LOCKED` | Too many wrong passwords (temporary) |
+
+Try every endpoint at once (service must be running):
+
+```bash
+./scripts/try-endpoints.sh
+```
+
 ## Configuration
 
 | Variable | Meaning |

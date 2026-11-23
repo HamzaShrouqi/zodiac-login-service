@@ -26,6 +26,13 @@ spring:
     # The master changelog: the table of contents listing every migration in order.
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+# Our own settings for the login rules. Read by config/AuthProperties.java.
+zodiac:
+  auth:
+    session-ttl: 7d                  # how long a login token stays valid
+    max-failed-login-attempts: 5     # wrong passwords in a row before a temporary lock
+    lock-duration: 15m               # how long that lock lasts
+
 server:
   # Each Zodiac service gets its own port so they can all run side by side locally.
   # Login = 8081. Override with the SERVER_PORT environment variable if needed.

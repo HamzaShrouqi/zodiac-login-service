@@ -35,6 +35,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-liquibase")
 	// PostgreSQL driver: only needed while the app runs, never in our code directly.
 	runtimeOnly("org.postgresql:postgresql")
+	// Only the password-hashing part of Spring Security (BCrypt), not the whole framework.
+	implementation("org.springframework.security:spring-security-crypto")
 
 	// Test support: JUnit 5, Mockito, AssertJ, MockMvc, plus the per-starter test helpers.
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
