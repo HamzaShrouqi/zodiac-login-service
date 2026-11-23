@@ -70,10 +70,22 @@ Try every endpoint at once (service must be running):
 ./scripts/try-endpoints.sh
 ```
 
+## Frontend
+
+Simple HTML/CSS/JS pages (log in, register, my account) live in `frontend/`.
+See [frontend/README.md](frontend/README.md). Short version, with the backend running:
+
+```bash
+python3 -m http.server 5500 --directory frontend
+```
+
+Then open <http://localhost:5500>.
+
 ## Configuration
 
 | Variable | Meaning |
 |---|---|
+| `ZODIAC_CORS_ALLOWED_ORIGINS` | Websites allowed to call the API from a browser, comma-separated (default: none). The `local` profile allows `http://localhost:5500` |
 | `DB_URL` | JDBC URL, e.g. `jdbc:postgresql://host:5432/login_db` |
 | `DB_USERNAME` / `DB_PASSWORD` | Database credentials |
 | `SPRING_PROFILES_ACTIVE` | Environment profile (`local` for laptops) |

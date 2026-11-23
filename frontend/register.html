@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account · Zodiac</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="card">
+    <header class="brand">
+      <span class="brand__mark" aria-hidden="true">✦</span>
+      <h1 class="brand__name">Zodiac</h1>
+      <p class="brand__tagline">Perfumes · Beauty · Gifts</p>
+    </header>
+
+    <h2>Create your account</h2>
+
+    <div id="message" class="message" role="alert" aria-live="polite" hidden></div>
+
+    <form id="register-form" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="username" required autofocus>
+        <p class="field__error" data-error-for="email"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required>
+        <p class="field__hint">At least 8 characters.</p>
+        <p class="field__error" data-error-for="password"></p>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required>
+        <p class="field__error" data-error-for="confirmPassword"></p>
+      </div>
+
+      <button type="submit" data-busy-text="Creating account…">Create account</button>
+    </form>
+
+    <p class="alt">Already have an account? <a href="index.html">Log in</a></p>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

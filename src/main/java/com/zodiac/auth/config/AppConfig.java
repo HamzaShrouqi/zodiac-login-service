@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /** Shared building blocks ("beans") that other classes ask for in their constructors. */
 @Configuration
-@EnableConfigurationProperties(AuthProperties.class)
+@EnableConfigurationProperties({ AuthProperties.class, CorsProperties.class })
 public class AppConfig {
 
 	/** BCrypt: a deliberately slow, salted password hash. The same password gives a different hash every time. */
