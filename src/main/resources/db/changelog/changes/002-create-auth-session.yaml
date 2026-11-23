@@ -1,0 +1,68 @@
+# One row per login ("wristband"). A user can have several at once (phone + laptop).
+# We store only a SHA-256 hash of the token, so a stolen copy of this table cannot be
+# used to log in as anyone.
+
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-auth-session
+      author: hamzashrouqi
+      changes:
+        - createTable:
+            tableName: auth_session
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_auth_session
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_auth_session_user_account
+                    references: user_account(id)
+                    # If an account is deleted, its sessions are deleted too.
+                    deleteCascade: true
+              - column:
+                  # SHA-256 hex = exactly 64 characters. Used to look up the session.
+                  name: token_hash
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uk_auth_session_token_hash
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  # Set on logout. A revoked session is never valid again.
+                  name: revoked_at
+                  type: TIMESTAMP WITH TIME ZONE
+              - column:
+                  # 45 characters fits the longest IPv6 address.
+                  name: ip_address
+                  type: VARCHAR(45)
+              - column:
+                  name: user_agent
+                  type: VARCHAR(255)
+
+  - changeSet:
+      # Makes "find all sessions of this user" fast (e.g. "log out everywhere").
+      id: 002-auth-session-user-id-index
+      author: hamzashrouqi
+      changes:
+        - createIndex:
+            tableName: auth_session
+            indexName: idx_auth_session_user_id
+            columns:
+              - column:
+                  name: user_id

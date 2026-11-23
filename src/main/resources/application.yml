@@ -1,10 +1,30 @@
 # Base configuration shared by every environment (local, review, prod).
-# Environment-specific values go in application-<profile>.yml files (added in Phase 3),
-# and secrets always come from environment variables, never from this file.
+# Values that differ per environment are read from environment variables: ${NAME}.
+# application-local.yml fills them in for your laptop. Secrets never live in this file.
 
 spring:
   application:
     name: login-service
+
+  datasource:
+    # No defaults on purpose: if these are missing, the app refuses to start
+    # instead of silently connecting to the wrong database.
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      # Liquibase owns the schema. Hibernate only CHECKS that our Java entities match
+      # the tables, and never creates or changes tables itself.
+      ddl-auto: validate
+    # Close the DB connection when the service layer is done, not at the end of the
+    # HTTP request. Avoids hidden, slow queries from controllers.
+    open-in-view: false
+
+  liquibase:
+    # The master changelog: the table of contents listing every migration in order.
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 server:
   # Each Zodiac service gets its own port so they can all run side by side locally.

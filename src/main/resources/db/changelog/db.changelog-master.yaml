@@ -1,0 +1,11 @@
+# Table of contents for every database change, in the order they run.
+#
+# Golden rule: NEVER edit a change file after it has been run anywhere.
+# Liquibase stores a checksum of each changeSet and refuses to start if one changed.
+# To change the schema, ADD a new file (003-..., 004-...) and include it at the bottom.
+
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-user-account.yaml
+  - include:
+      file: db/changelog/changes/002-create-auth-session.yaml

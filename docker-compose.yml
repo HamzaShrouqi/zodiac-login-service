@@ -1,0 +1,29 @@
+# Local PostgreSQL for development only.
+# Start:  docker compose up -d      Stop: docker compose down
+# Wipe all local data and start fresh:  docker compose down -v
+#
+# The password below is NOT a secret: this database exists only on your laptop.
+# Real environments (review, prod) get their passwords from environment variables.
+
+services:
+  postgres:
+    # Pinned version: same as the Testcontainers tests, and supported by Amazon Aurora.
+    image: postgres:17.12-alpine
+    container_name: zodiac-login-db
+    environment:
+      POSTGRES_DB: login_db
+      POSTGRES_USER: login_user
+      POSTGRES_PASSWORD: login_local_pw
+    ports:
+      - "5432:5432"   # laptop port : container port
+    volumes:
+      # Keeps your data when the container restarts.
+      - login-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U login_user -d login_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  login-db-data:
