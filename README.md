@@ -100,6 +100,15 @@ curl http://localhost:8081/actuator/health
 
 Tests need Docker running. Testcontainers starts a fresh, throwaway PostgreSQL for each run.
 
+| Kind | Where | Uses | Speed |
+|---|---|---|---|
+| Unit tests | `src/test/.../service`, `security`, `entity` | JUnit 5 + Mockito, no Spring, no database | milliseconds |
+| Integration tests | `src/test/.../integration` | Whole app + real PostgreSQL, calls endpoints with MockMvc | seconds |
+
+`MutableClock` lets tests move time forward (expired sessions, lock timeouts) without waiting.
+
+Run one test class: `./gradlew test --tests '*AuthServiceTest'`. The HTML report is at `build/reports/tests/test/index.html`.
+
 ## Build a runnable jar
 
 ```bash
