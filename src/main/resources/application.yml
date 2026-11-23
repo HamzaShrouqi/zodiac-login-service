@@ -1,0 +1,20 @@
+# Base configuration shared by every environment (local, review, prod).
+# Environment-specific values go in application-<profile>.yml files (added in Phase 3),
+# and secrets always come from environment variables, never from this file.
+
+spring:
+  application:
+    name: login-service
+
+server:
+  # Each Zodiac service gets its own port so they can all run side by side locally.
+  # Login = 8081. Override with the SERVER_PORT environment variable if needed.
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # Expose only what deployment platforms need. Actuator can expose much more
+        # (env, beans, heap dumps...), which would leak internals if made public.
+        include: health, info
