@@ -314,6 +314,12 @@ class AuthApiIntegrationTest {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
 
+	@Test
+	void apiDocumentationPagesAreOffUnlessSwitchedOn() throws Exception {
+		mockMvc.perform(get("/v3/api-docs")).andExpect(status().isNotFound());
+		mockMvc.perform(get("/swagger-ui/index.html")).andExpect(status().isNotFound());
+	}
+
 	// ---------- helpers: one line per API call, so the tests above read like a story ----------
 
 	private ResultActions register(String email, String password) throws Exception {

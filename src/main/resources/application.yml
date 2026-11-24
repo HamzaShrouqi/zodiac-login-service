@@ -33,6 +33,14 @@ zodiac:
     max-failed-login-attempts: 5     # wrong passwords in a row before a temporary lock
     lock-duration: 15m               # how long that lock lasts
 
+# API documentation pages (/swagger-ui.html and /v3/api-docs).
+# Off by default; application-local.yml turns them on for development.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
 server:
   # Each Zodiac service gets its own port so they can all run side by side locally.
   # Login = 8081. Override with the SERVER_PORT environment variable if needed.

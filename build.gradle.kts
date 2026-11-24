@@ -37,6 +37,9 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	// Only the password-hashing part of Spring Security (BCrypt), not the whole framework.
 	implementation("org.springframework.security:spring-security-crypto")
+	// Generates the OpenAPI description and the Swagger UI page from our controllers.
+	// Not part of Spring Boot's tested-together list, so the version is pinned here.
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.1")
 
 	// Test support: JUnit 5, Mockito, AssertJ, MockMvc, plus the per-starter test helpers.
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")

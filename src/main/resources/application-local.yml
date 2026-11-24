@@ -11,6 +11,13 @@ spring:
     # Print the SQL Hibernate runs, which is useful for learning and debugging. Never in prod.
     show-sql: true
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    operations-sorter: method   # group endpoints by HTTP method (GET, POST, PUT)
+
 zodiac:
   cors:
     # The local frontend (see frontend/README.md) runs on port 5500.

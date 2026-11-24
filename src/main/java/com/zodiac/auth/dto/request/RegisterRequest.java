@@ -1,5 +1,6 @@
 package com.zodiac.auth.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,7 +11,9 @@ import jakarta.validation.constraints.Size;
  * Max 72 characters because BCrypt ignores everything after 72 bytes.
  */
 public record RegisterRequest(
+		@Schema(example = "sara@example.com")
 		@NotBlank @Email @Size(max = 254) String email,
+		@Schema(example = "rose-oud-2026", description = "8 to 72 characters")
 		@NotBlank @Size(min = 8, max = 72) String password) {
 
 	/**
