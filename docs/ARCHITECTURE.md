@@ -133,7 +133,7 @@ All schema changes are Liquibase changelogs in `src/main/resources/db/changelog/
 | API docs page | On | Off by default |
 | Profile | `local` (set automatically by `bootRun`) | `SPRING_PROFILES_ACTIVE` |
 
-The service refuses to start if the database settings are missing, instead of guessing.
+The service refuses to start if the database settings are missing, instead of guessing. How it is built, packaged and checked on every push is described in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Testing strategy
 

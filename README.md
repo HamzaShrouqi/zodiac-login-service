@@ -1,5 +1,7 @@
 # Zodiac Login Service
 
+[![CI](https://github.com/HamzaShrouqi/zodiac-login-service/actions/workflows/ci.yml/badge.svg)](https://github.com/HamzaShrouqi/zodiac-login-service/actions/workflows/ci.yml)
+
 Accounts and login for the Zodiac boutique platform (perfumes, cosmetics, skincare, accessories, gifts).
 It owns credentials, roles and login sessions. Customer profile data will live in the future Onboarding Service.
 
@@ -28,6 +30,7 @@ Stop with `Ctrl+C`. Stop the database with `docker compose down` (`docker compos
 ## Documentation
 
 - [Architecture overview](docs/ARCHITECTURE.md): diagrams, data model, decisions
+- [Deployment notes](docs/DEPLOYMENT.md): environments, container image, health checks, CI
 - [Frontend notes](frontend/README.md)
 - API reference: the Swagger page above. The raw OpenAPI file is at <http://localhost:8081/v3/api-docs>.
 
@@ -106,6 +109,21 @@ DB_URL=jdbc:postgresql://localhost:5432/login_db DB_USERNAME=login_user DB_PASSW
   java -jar build/libs/login-service-0.0.1-SNAPSHOT.jar
 ```
 
+## Run as a container
+
+```bash
+docker build -t zodiac-login-service .
+```
+
+```bash
+docker run --rm -p 8081:8081 \
+  -e DB_URL=jdbc:postgresql://host.docker.internal:5432/login_db \
+  -e DB_USERNAME=login_user -e DB_PASSWORD=login_local_pw \
+  zodiac-login-service
+```
+
+Needs the database running (`docker compose up -d`). More in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
 ## Configuration
 
 Settings come from environment variables, so the same jar runs everywhere.
@@ -133,6 +151,8 @@ Schema changes are made only by adding new Liquibase changelog files in `src/mai
 login-service/
 ├── build.gradle.kts, settings.gradle.kts, gradlew      build setup (the wrapper pins Gradle)
 ├── docker-compose.yml                                  local PostgreSQL
+├── Dockerfile, .dockerignore                           container image
+├── .github/workflows/ci.yml                            build + test on every push
 ├── scripts/                                            dev.sh (start everything), try-endpoints.sh
 ├── docs/ARCHITECTURE.md
 ├── frontend/                                           static pages
@@ -153,5 +173,5 @@ login-service/
 | `Docker is not running` or `Could not find a valid Docker environment` | Open Docker Desktop and wait for the whale icon |
 | `Port 8081 / 5500 is already in use` | Stop the other copy of the service, or set `SERVER_PORT` |
 | `port 5432 is already allocated` | Another PostgreSQL is using that port; stop it |
-| Backend won't start: `Could not resolve placeholder 'DB_URL'` | Run through `./gradlew bootRun` (sets the profile) or set the variables above |
+| Backend won't start: `'url' must start with "jdbc"` | The database settings are missing. Run through `./gradlew bootRun` (sets the profile) or set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` |
 | Web page says "Cannot reach the server" | Backend isn't running, or the page isn't served from `http://localhost:5500` |
